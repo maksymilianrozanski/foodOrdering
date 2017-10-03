@@ -28,9 +28,8 @@ public class Main {
                 case 1:
                     System.out.println("Entered number: " + enteredNumber);
                     System.out.println("Ordering a drink");
-                    session.beginTransaction();
-                    List<Dish> drinks = session.createQuery("FROM Dish D where D.typeOfMeal = 'drink'").list();
-                    System.out.println("List of drinks");
+                    List<Dish> drinks = queryDrinks(factory);
+                    System.out.println("List of drinks:");
                     for (Dish drink : drinks) {
                         System.out.println(drink.getDishName());
                     }
@@ -60,15 +59,16 @@ public class Main {
 //    }
     }
 
-//    private static List<Dish> queryDrinks(SessionFactory factory) {
-//        try {
-//            Session session = factory.getCurrentSession();
-//            String hql = "SELECT D FROM dishes where D.typeofmeal = drink";
-//            Query query = session.createQuery(hql);
-//            List<Dish> drinks = query.list();
-//            return drinks;
-//        } finally {
-//            factory.close();
-//        }
-//    }
+    private static List<Dish> queryDrinks(SessionFactory factory) {
+        try {
+            Session session = factory.getCurrentSession();
+            session.beginTransaction();
+            String hql = "FROM Dish D where D.typeOfMeal = 'drink'";
+            Query query = session.createQuery(hql);
+            List<Dish> drinks = query.list();
+            return drinks;
+        } finally {
+            factory.close();
+        }
+    }
 }
