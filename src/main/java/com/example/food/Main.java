@@ -32,15 +32,19 @@ public class Main {
                     //must choose cuisine first - query for possible cuisines
                     List<String> availableCuisines = availableCuisines(factory);
                     //choose a cuisine
+                    String chosenCuisine;
                     try {
-                        String chosenCuisine = chosenCuisine(availableCuisines);
+                        chosenCuisine = chosenCuisine(availableCuisines);
                         System.out.println("Chosen cuisine: " + chosenCuisine);
                     }catch (IndexOutOfBoundsException e){
                         break;
                     }
-
-
                     //choose main course
+                    List<Dish> mainCourses = mainCoursesWhereCuisine(factory, chosenCuisine);
+                    System.out.println("Available main courses: ");
+                    for (Dish dish:mainCourses){    //TODO: temp - delete this for loop
+                        System.out.println(dish.getDishName());
+                    }
 
                     //choose dessert
 
@@ -88,8 +92,6 @@ public class Main {
             for (Dish dish : dishes) {
                 cuisinesSet.add(dish.getCuisine());
             }
-//            System.out.println("List of available cuisines:");
-//            System.out.println(cuisines);
             List<String> cuisinesList = new ArrayList<>();
             cuisinesList.addAll(cuisinesSet);
             return cuisinesList;
@@ -132,6 +134,19 @@ public class Main {
         }catch (IndexOutOfBoundsException e){
             System.out.println("Incorrect number.");
             throw e;
+        }
+    }
+
+    private static List<Dish> mainCoursesWhereCuisine(SessionFactory factory, String cuisine){
+        Session session = factory.getCurrentSession();
+        try {
+            session.beginTransaction();
+            String hql= "FROM Dish D where D.typeOfMeal = 'mainCourse' and D.cuisine = '" + cuisine + "'";
+            Query query = session.createQuery(hql);
+            List<Dish> mainCourses = query.list();
+            return mainCourses;
+        }finally {
+            session.close();
         }
     }
 }
