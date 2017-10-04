@@ -21,6 +21,7 @@ public class Main {
 //TODO: catch java.util.InputMismatchException (if entered not number)
         while (true) {
             System.out.println("Enter 1 to order a drink, 2 to order a lunch.");
+            Order order = new Order();
             int enteredNumber = scanner.nextInt();
             switch (enteredNumber) {
                 case 1:
@@ -41,11 +42,7 @@ public class Main {
                     }
                     //choose main course
                     List<Dish> mainCourses = mainCoursesWhereCuisine(factory, chosenCuisine);
-                    System.out.println("Available main courses: ");
-                    for (Dish dish:mainCourses){    //TODO: temp - delete this for loop
-                        System.out.println(dish.getDishName());
-                    }
-
+                    order.chooseMainCourse(mainCourses);
                     //choose dessert
 
 
@@ -149,4 +146,6 @@ public class Main {
             session.close();
         }
     }
+
+
 }

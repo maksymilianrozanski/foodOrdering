@@ -2,6 +2,9 @@ package com.example.food;
 
 import com.example.food.model.Dish;
 
+import java.util.List;
+import java.util.Scanner;
+
 public class Order {
     private Dish mainCourse;
     private Dish dessert;
@@ -39,4 +42,20 @@ public class Order {
     public void setDrink(Dish drink) {
         this.drink = drink;
     }
+
+    public void chooseMainCourse(List<Dish> mainCourses) {
+        System.out.println("Available main courses - please enter a number:");
+        for (int i = 0; i < mainCourses.size(); i++) {
+            System.out.println(i + ") " + mainCourses.get(i).getDishName() + ", price: " + mainCourses.get(i).getPrice() + "$");
+        }
+        Scanner scanner = new Scanner(System.in);
+        int chosenNumber = scanner.nextInt();
+        try {
+            this.setMainCourse(mainCourses.get(chosenNumber));
+            System.out.println("Added " + mainCourses.get(chosenNumber).getDishName() + " to your order.");
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Incorrect number.");
+        }
+    }
+
 }
