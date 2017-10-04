@@ -30,7 +30,14 @@ public class Main {
                     System.out.println("Entered number: " + enteredNumber);
                     System.out.println("Ordering a lunch");
                     //must choose cuisine first - query for possible cuisines
-                    availableCuisines(factory);
+                    List<String> availableCuisines = availableCuisines(factory);
+                    //choose a cuisine
+                    try {
+                        String chosenCuisine = chosenCuisine(availableCuisines);
+                        System.out.println("Chosen cuisine: " + chosenCuisine);
+                    }catch (IndexOutOfBoundsException e){
+                        break;
+                    }
 
 
                     //choose main course
@@ -70,26 +77,28 @@ public class Main {
         }
     }
 
-    private static Set<String> availableCuisines(SessionFactory factory){
+    private static List<String> availableCuisines(SessionFactory factory) {
         Session session = factory.getCurrentSession();
-        try{
+        try {
             session.beginTransaction();
             String hql = "FROM Dish D where D.typeOfMeal = 'mainCourse'";
             Query query = session.createQuery(hql);
             List<Dish> dishes = query.list();
-            SortedSet<String> cuisines = new TreeSet<>();
-            for(Dish dish:dishes){
-                cuisines.add(dish.getCuisine());
+            HashSet<String> cuisinesSet = new HashSet<>();
+            for (Dish dish : dishes) {
+                cuisinesSet.add(dish.getCuisine());
             }
-            System.out.println("List of available cuisines:");
-            System.out.println(cuisines);
-            return cuisines;
-        }finally {
+//            System.out.println("List of available cuisines:");
+//            System.out.println(cuisines);
+            List<String> cuisinesList = new ArrayList<>();
+            cuisinesList.addAll(cuisinesSet);
+            return cuisinesList;
+        } finally {
             session.close();
         }
     }
 
-    private static void orderDrink(SessionFactory factory){
+    private static void orderDrink(SessionFactory factory) {
         int totalPrice = 0;
         Scanner scanner = new Scanner(System.in);
         List<Dish> drinks = queryDrinks(factory);
@@ -105,9 +114,24 @@ public class Main {
         try {
             Dish orderedDrink = drinks.get(enteredNumber);
             totalPrice = totalPrice + orderedDrink.getPrice();
-            System.out.println("Your order: " + orderedDrink.getDishName() +", price: "+ totalPrice + "$");
+            System.out.println("Your order: " + orderedDrink.getDishName() + ", price: " + totalPrice + "$");
         } catch (IndexOutOfBoundsException e) {
-            System.out.println("Incorrect number. ");
+            System.out.println("Incorrect number.");
+        }
+    }
+
+    private static String chosenCuisine(List<String> availableCuisines) {
+        System.out.println("List of available cuisines - please enter a number:");
+        for (int i = 0; i < availableCuisines.size(); i++) {
+            System.out.println(i + ") " + availableCuisines.get(i));
+        }
+        Scanner scanner = new Scanner(System.in);
+        int chosenNumber = scanner.nextInt();
+        try {
+            return availableCuisines.get(chosenNumber);
+        }catch (IndexOutOfBoundsException e){
+            System.out.println("Incorrect number.");
+            throw e;
         }
     }
 }
