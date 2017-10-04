@@ -37,14 +37,19 @@ public class Main {
                     try {
                         chosenCuisine = chosenCuisine(availableCuisines);
                         System.out.println("Chosen cuisine: " + chosenCuisine);
-                    }catch (IndexOutOfBoundsException e){
+                    } catch (IndexOutOfBoundsException e) {
                         break;
                     }
                     //choose main course
                     List<Dish> mainCourses = mainCoursesWhereCuisine(factory, chosenCuisine);
                     order.chooseMainCourse(mainCourses);
                     //choose dessert
+                    List<Dish> desserts = dessertWhereCuisine(factory, chosenCuisine);
 
+                    System.out.println("Available desserts:");  //TODO: delete this system out and for loop below.
+                    for (Dish dish : desserts) {
+                        System.out.println(dish.getDishName());
+                    }
 
                     break;
                 default:
@@ -128,21 +133,34 @@ public class Main {
         int chosenNumber = scanner.nextInt();
         try {
             return availableCuisines.get(chosenNumber);
-        }catch (IndexOutOfBoundsException e){
+        } catch (IndexOutOfBoundsException e) {
             System.out.println("Incorrect number.");
             throw e;
         }
     }
 
-    private static List<Dish> mainCoursesWhereCuisine(SessionFactory factory, String cuisine){
+    private static List<Dish> mainCoursesWhereCuisine(SessionFactory factory, String cuisine) {
         Session session = factory.getCurrentSession();
         try {
             session.beginTransaction();
-            String hql= "FROM Dish D where D.typeOfMeal = 'mainCourse' and D.cuisine = '" + cuisine + "'";
+            String hql = "FROM Dish D where D.typeOfMeal = 'mainCourse' and D.cuisine = '" + cuisine + "'";
             Query query = session.createQuery(hql);
             List<Dish> mainCourses = query.list();
             return mainCourses;
-        }finally {
+        } finally {
+            session.close();
+        }
+    }
+
+    private static List<Dish> dessertWhereCuisine(SessionFactory factory, String cuisine) {
+        Session session = factory.getCurrentSession();
+        try {
+            session.beginTransaction();
+            String hql = "from Dish D where D.typeOfMeal = 'dessert' and D.cuisine = '" + cuisine + "'";
+            Query query = session.createQuery(hql);
+            List<Dish> desserts = query.list();
+            return desserts;
+        } finally {
             session.close();
         }
     }
