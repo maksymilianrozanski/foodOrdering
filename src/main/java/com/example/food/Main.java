@@ -6,8 +6,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
 
@@ -30,6 +29,15 @@ public class Main {
                 case 2:
                     System.out.println("Entered number: " + enteredNumber);
                     System.out.println("Ordering a lunch");
+                    //must choose cuisine first - query for possible cuisines
+                    availableCuisines(factory);
+
+
+                    //choose main course
+
+                    //choose dessert
+
+
                     break;
                 default:
                     System.out.println("Incorrect input, Enter 1 to order a drink, 2 to order a lunch.");
@@ -58,6 +66,25 @@ public class Main {
             List<Dish> drinks = query.list();
             return drinks;
         } finally {
+            session.close();
+        }
+    }
+
+    private static Set<String> availableCuisines(SessionFactory factory){
+        Session session = factory.getCurrentSession();
+        try{
+            session.beginTransaction();
+            String hql = "FROM Dish D where D.typeOfMeal = 'mainCourse'";
+            Query query = session.createQuery(hql);
+            List<Dish> dishes = query.list();
+            SortedSet<String> cuisines = new TreeSet<>();
+            for(Dish dish:dishes){
+                cuisines.add(dish.getCuisine());
+            }
+            System.out.println("List of available cuisines:");
+            System.out.println(cuisines);
+            return cuisines;
+        }finally {
             session.close();
         }
     }
