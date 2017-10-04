@@ -58,4 +58,18 @@ public class Order {
         }
     }
 
+    public void chooseDessert(List<Dish> desserts) {
+        System.out.println("Available desserts - please enter a number:");
+        for (int i = 0; i < desserts.size(); i++) {
+            System.out.println(i + ") " + desserts.get(i).getDishName() + ", price " + desserts.get(i).getPrice() + "$");
+        }
+        Scanner scanner = new Scanner(System.in);
+        int chosenNumber = scanner.nextInt();
+        try {
+            this.setDessert(desserts.get(chosenNumber));
+            System.out.println("Added " + desserts.get(chosenNumber).getDishName() + " to your order.");
+        }catch (IndexOutOfBoundsException e){
+            System.out.println("Incorrect number.");
+        }
+    }
 }

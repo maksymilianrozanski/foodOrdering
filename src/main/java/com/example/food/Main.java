@@ -45,12 +45,7 @@ public class Main {
                     order.chooseMainCourse(mainCourses);
                     //choose dessert
                     List<Dish> desserts = dessertWhereCuisine(factory, chosenCuisine);
-
-                    System.out.println("Available desserts:");  //TODO: delete this system out and for loop below.
-                    for (Dish dish : desserts) {
-                        System.out.println(dish.getDishName());
-                    }
-
+                    order.chooseDessert(desserts);
                     break;
                 default:
                     System.out.println("Incorrect input, Enter 1 to order a drink, 2 to order a lunch.");
