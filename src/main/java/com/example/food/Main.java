@@ -17,11 +17,13 @@ public class Main {
         // create session factory
         SessionFactory factory = new Configuration().configure("hibernate.cfg.xml").addAnnotatedClass(Dish.class).buildSessionFactory();
         Session session = factory.getCurrentSession();
+        int totalPrice;
 
         Scanner scanner = new Scanner(System.in);
 //TODO: catch java.util.InputMismatchException (if entered not number)
         boolean continueLoop = true;
         while (continueLoop) {
+            totalPrice = 0;
             System.out.println("Enter 1 to order a drink, 2 to order a lunch.");
             int enteredNumber = scanner.nextInt();
             switch (enteredNumber) {
@@ -32,6 +34,16 @@ public class Main {
                     System.out.println("List of drinks:");
                     for (int i = 0; i < drinks.size(); i++) {
                         System.out.println(i + ") " + drinks.get(i).getDishName() + ", price: " + drinks.get(i).getPrice() + "$");
+                    }
+                    System.out.println("Enter the number of drink to order.");
+                    enteredNumber = scanner.nextInt();
+                    try {
+                        Dish orderedDrink = drinks.get(enteredNumber);
+                        totalPrice = totalPrice + orderedDrink.getPrice();
+                        System.out.println("Your order: " + orderedDrink.getDishName() +", price: "+ totalPrice + "$");
+                    } catch (IndexOutOfBoundsException e) {
+                        System.out.println("Incorrect number. ");
+                        break;
                     }
                     continueLoop = false;
                     break;
@@ -60,15 +72,15 @@ public class Main {
     }
 
     private static List<Dish> queryDrinks(SessionFactory factory) {
+        Session session = factory.getCurrentSession();
         try {
-            Session session = factory.getCurrentSession();
             session.beginTransaction();
             String hql = "FROM Dish D where D.typeOfMeal = 'drink'";
             Query query = session.createQuery(hql);
             List<Dish> drinks = query.list();
             return drinks;
         } finally {
-            factory.close();
+            session.close();
         }
     }
 }
