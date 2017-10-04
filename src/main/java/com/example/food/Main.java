@@ -30,8 +30,8 @@ public class Main {
                     System.out.println("Ordering a drink");
                     List<Dish> drinks = queryDrinks(factory);
                     System.out.println("List of drinks:");
-                    for (Dish drink : drinks) {
-                        System.out.println(drink.getDishName());
+                    for (int i = 0; i < drinks.size(); i++) {
+                        System.out.println(i + ") " + drinks.get(i).getDishName() + ", price: " + drinks.get(i).getPrice() + "$");
                     }
                     continueLoop = false;
                     break;
