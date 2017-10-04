@@ -72,4 +72,20 @@ public class Order {
             System.out.println("Incorrect number.");
         }
     }
+
+    public void printOrderSummary(){
+        System.out.println("Your order summary:");
+        int totalPrice = 0;
+        if (this.mainCourse != null){
+            System.out.println("Main course: " + this.getMainCourse().getDishName()
+                    + ", price: " + this.getMainCourse().getPrice() + "$");
+            totalPrice = totalPrice + this.getMainCourse().getPrice();
+        }
+        if (this.dessert != null){
+            System.out.println("Dessert: " + this.getDessert().getDishName()
+            + ", price: " + this.getDessert().getPrice() + "$");
+            totalPrice = totalPrice + this.getDessert().getPrice();
+        }
+        System.out.println("Total price: " + totalPrice + "$");
+    }
 }

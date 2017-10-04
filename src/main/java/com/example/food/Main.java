@@ -46,6 +46,8 @@ public class Main {
                     //choose dessert
                     List<Dish> desserts = dessertWhereCuisine(factory, chosenCuisine);
                     order.chooseDessert(desserts);
+                    order.printOrderSummary();
+
                     break;
                 default:
                     System.out.println("Incorrect input, Enter 1 to order a drink, 2 to order a lunch.");
