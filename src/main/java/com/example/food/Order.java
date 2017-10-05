@@ -86,38 +86,49 @@ public class Order {
     }
 
     void chooseDessert(List<Dish> desserts) {
-        System.out.println("Available desserts - please enter a number:");
-        for (int i = 0; i < desserts.size(); i++) {
-            System.out.println(i + ") " + desserts.get(i).getDishName() + ", price " + desserts.get(i).getPrice() + "$");
-        }
-        Scanner scanner = new Scanner(System.in);
-        int chosenNumber = scanner.nextInt();
-        try {
-            this.setDessert(desserts.get(chosenNumber));
-            System.out.println("Added " + desserts.get(chosenNumber).getDishName() + " to your order.");
-        } catch (IndexOutOfBoundsException e) {
-            System.out.println("Incorrect number.");
+        while(this.getDessert() == null) {
+            System.out.println("Available desserts - please enter a number:");
+            for (int i = 0; i < desserts.size(); i++) {
+                System.out.println(i + ") " + desserts.get(i).getDishName() + ", price " + desserts.get(i).getPrice() + "$");
+            }
+            Scanner scanner = new Scanner(System.in);
+            int chosenNumber;
+            if (scanner.hasNextInt()){
+                chosenNumber = scanner.nextInt();
+            }else {
+                chosenNumber = -1;
+            }
+            try {
+                this.setDessert(desserts.get(chosenNumber));
+                System.out.println("Added " + desserts.get(chosenNumber).getDishName() + " to your order.");
+            } catch (IndexOutOfBoundsException e) {
+                System.out.println("Incorrect number.");
+            }
         }
     }
 
     void chooseDrink(SessionFactory factory) {
-        Scanner scanner = new Scanner(System.in);
-        List<Dish> drinks = DbAccess.queryDrinks(factory);
-        System.out.println("List of drinks:");
-        for (int i = 0; i < drinks.size(); i++) {
-            System.out.println(i + ") " + drinks.get(i).getDishName() + ", price: " + drinks.get(i).getPrice() + "$");
-        }
-        System.out.println("Enter the number of drink to order.");
-
-        int enteredNumber = scanner.nextInt();
-        System.out.println("Entered number: " + enteredNumber);
-
-        try {
-            Dish orderedDrink = drinks.get(enteredNumber);
-            this.setDrink(orderedDrink);
-            this.askForIceAndLemon();
-        } catch (IndexOutOfBoundsException e) {
-            System.out.println("Incorrect number.");
+        while (this.getDrink() == null) {
+            Scanner scanner = new Scanner(System.in);
+            List<Dish> drinks = DbAccess.queryDrinks(factory);
+            System.out.println("List of drinks:");
+            for (int i = 0; i < drinks.size(); i++) {
+                System.out.println(i + ") " + drinks.get(i).getDishName() + ", price: " + drinks.get(i).getPrice() + "$");
+            }
+            System.out.println("Enter the number of drink to order.");
+            int enteredNumber;
+            if (scanner.hasNextInt()){
+                enteredNumber = scanner.nextInt();
+            }else {
+                enteredNumber = -1;
+            }
+            try {
+                Dish orderedDrink = drinks.get(enteredNumber);
+                this.setDrink(orderedDrink);
+                this.askForIceAndLemon();
+            } catch (IndexOutOfBoundsException e) {
+                System.out.println("Incorrect number.");
+            }
         }
     }
 
