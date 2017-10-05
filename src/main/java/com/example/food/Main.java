@@ -3,6 +3,7 @@ package com.example.food;
 import com.example.food.Dao.DbAccess;
 import com.example.food.model.Dish;
 import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 
 import java.util.List;
@@ -13,7 +14,10 @@ public class Main {
 
     public static void main(String[] args) {
 
-        SessionFactory factory = new Configuration().configure("hibernate.cfg.xml").addAnnotatedClass(Dish.class).buildSessionFactory();
+        Configuration configuration = new Configuration().configure().addAnnotatedClass(Dish.class);
+        StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
+        SessionFactory factory = configuration.buildSessionFactory(builder.build());
+
         Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.println("Enter 1 to order a drink, 2 to order a lunch.");
