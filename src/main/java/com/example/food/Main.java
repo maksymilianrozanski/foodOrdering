@@ -40,13 +40,8 @@ public class Main {
                     //must choose cuisine first - query for possible cuisines
                     List<String> availableCuisines = DbAccess.availableCuisines(factory);
                     //choose a cuisine
-                    String chosenCuisine;
-                    try {
-                        chosenCuisine = DbAccess.chosenCuisine(availableCuisines);
-                        System.out.println("Chosen cuisine: " + chosenCuisine);
-                    } catch (IndexOutOfBoundsException e) {
-                        break;
-                    }
+                    String chosenCuisine = chosenCuisine(availableCuisines);
+                    System.out.println("Chosen cuisine: " + chosenCuisine);
                     //choose main course
                     List<Dish> mainCourses = DbAccess.mainCoursesWhereCuisine(factory, chosenCuisine);
                     order.chooseMainCourse(mainCourses);
@@ -58,6 +53,27 @@ public class Main {
                 default:
                     System.out.println("Incorrect input.");
                     break;
+            }
+        }
+    }
+
+    private static String chosenCuisine(List<String> availableCuisines) {
+        while (true) {
+            System.out.println("List of available cuisines - please enter a number:");
+            for (int i = 0; i < availableCuisines.size(); i++) {
+                System.out.println(i + ") " + availableCuisines.get(i));
+            }
+            Scanner scanner = new Scanner(System.in);
+            int chosenNumber;
+            if (scanner.hasNextInt()){
+                chosenNumber = scanner.nextInt();
+            }else {
+                chosenNumber = -1;
+            }
+            try {
+                return availableCuisines.get(chosenNumber);
+            } catch (IndexOutOfBoundsException e) {
+                System.out.println("Incorrect number.");
             }
         }
     }

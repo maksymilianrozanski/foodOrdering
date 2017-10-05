@@ -43,21 +43,6 @@ public class DbAccess {
             session.close();
         }
     }
-    //TODO: validate input
-    public static String chosenCuisine(List<String> availableCuisines) {
-        System.out.println("List of available cuisines - please enter a number:");
-        for (int i = 0; i < availableCuisines.size(); i++) {
-            System.out.println(i + ") " + availableCuisines.get(i));
-        }
-        Scanner scanner = new Scanner(System.in);
-        int chosenNumber = scanner.nextInt();
-        try {
-            return availableCuisines.get(chosenNumber);
-        } catch (IndexOutOfBoundsException e) {
-            System.out.println("Incorrect number.");
-            throw e;
-        }
-    }
 
     public static List<Dish> mainCoursesWhereCuisine(SessionFactory factory, String cuisine) {
         Session session = factory.getCurrentSession();
