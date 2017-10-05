@@ -1,12 +1,13 @@
 package com.example.food;
 
+import com.example.food.Dao.DbAccess;
 import com.example.food.model.Dish;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-import java.util.*;
+import java.util.List;
+import java.util.Scanner;
 
 public class Main {
 
@@ -32,20 +33,20 @@ public class Main {
                     System.out.println("Entered number: " + enteredNumber);
                     System.out.println("Ordering a lunch");
                     //must choose cuisine first - query for possible cuisines
-                    List<String> availableCuisines = availableCuisines(factory);
+                    List<String> availableCuisines = DbAccess.availableCuisines(factory);
                     //choose a cuisine
                     String chosenCuisine;
                     try {
-                        chosenCuisine = chosenCuisine(availableCuisines);
+                        chosenCuisine = DbAccess.chosenCuisine(availableCuisines);
                         System.out.println("Chosen cuisine: " + chosenCuisine);
                     } catch (IndexOutOfBoundsException e) {
                         break;
                     }
                     //choose main course
-                    List<Dish> mainCourses = mainCoursesWhereCuisine(factory, chosenCuisine);
+                    List<Dish> mainCourses = DbAccess.mainCoursesWhereCuisine(factory, chosenCuisine);
                     order.chooseMainCourse(mainCourses);
                     //choose dessert
-                    List<Dish> desserts = dessertWhereCuisine(factory, chosenCuisine);
+                    List<Dish> desserts = DbAccess.dessertWhereCuisine(factory, chosenCuisine);
                     order.chooseDessert(desserts);
                     order.printOrderSummary();
 
@@ -67,79 +68,4 @@ public class Main {
 //        }
 //    }
     }
-
-    static List<Dish> queryDrinks(SessionFactory factory) {
-        Session session = factory.getCurrentSession();
-        try {
-            session.beginTransaction();
-            String hql = "FROM Dish D where D.typeOfMeal = 'drink'";
-            Query query = session.createQuery(hql);
-            List<Dish> drinks = query.list();
-            return drinks;
-        } finally {
-            session.close();
-        }
-    }
-
-    private static List<String> availableCuisines(SessionFactory factory) {
-        Session session = factory.getCurrentSession();
-        try {
-            session.beginTransaction();
-            String hql = "FROM Dish D where D.typeOfMeal = 'mainCourse'";
-            Query query = session.createQuery(hql);
-            List<Dish> dishes = query.list();
-            HashSet<String> cuisinesSet = new HashSet<>();
-            for (Dish dish : dishes) {
-                cuisinesSet.add(dish.getCuisine());
-            }
-            List<String> cuisinesList = new ArrayList<>();
-            cuisinesList.addAll(cuisinesSet);
-            return cuisinesList;
-        } finally {
-            session.close();
-        }
-    }
-
-    private static String chosenCuisine(List<String> availableCuisines) {
-        System.out.println("List of available cuisines - please enter a number:");
-        for (int i = 0; i < availableCuisines.size(); i++) {
-            System.out.println(i + ") " + availableCuisines.get(i));
-        }
-        Scanner scanner = new Scanner(System.in);
-        int chosenNumber = scanner.nextInt();
-        try {
-            return availableCuisines.get(chosenNumber);
-        } catch (IndexOutOfBoundsException e) {
-            System.out.println("Incorrect number.");
-            throw e;
-        }
-    }
-
-    private static List<Dish> mainCoursesWhereCuisine(SessionFactory factory, String cuisine) {
-        Session session = factory.getCurrentSession();
-        try {
-            session.beginTransaction();
-            String hql = "FROM Dish D where D.typeOfMeal = 'mainCourse' and D.cuisine = '" + cuisine + "'";
-            Query query = session.createQuery(hql);
-            List<Dish> mainCourses = query.list();
-            return mainCourses;
-        } finally {
-            session.close();
-        }
-    }
-
-    private static List<Dish> dessertWhereCuisine(SessionFactory factory, String cuisine) {
-        Session session = factory.getCurrentSession();
-        try {
-            session.beginTransaction();
-            String hql = "from Dish D where D.typeOfMeal = 'dessert' and D.cuisine = '" + cuisine + "'";
-            Query query = session.createQuery(hql);
-            List<Dish> desserts = query.list();
-            return desserts;
-        } finally {
-            session.close();
-        }
-    }
-
-
 }
