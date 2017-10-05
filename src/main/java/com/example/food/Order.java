@@ -133,10 +133,21 @@ public class Order {
     }
 
     private void askForIceAndLemon() {
-        System.out.println("Should we add ice cubes or lemon to ordered drink?");
-        System.out.println("Enter:\n0) no ice cubes, no lemon\n1) add only ice cubes\n2) add only lemon\n3) add ice cubes and lemon");
-        Scanner scanner = new Scanner(System.in);
-        int chosenNumber = scanner.nextInt();
+        int chosenNumber;
+        while (true) {
+            System.out.println("Should we add ice cubes or lemon to ordered drink?");
+            System.out.println("Enter:\n0) no ice cubes, no lemon\n1) add only ice cubes\n2) add only lemon\n3) add ice cubes and lemon");
+            Scanner scanner = new Scanner(System.in);
+            if(scanner.hasNextInt()) {
+                chosenNumber = scanner.nextInt();
+            }else {
+                chosenNumber = -1;
+            }
+            if (chosenNumber >= 0 && chosenNumber <4){
+                break;
+            }
+            System.out.println("Incorrect input.");
+        }
         switch (chosenNumber) {
             case 0:
                 break;
