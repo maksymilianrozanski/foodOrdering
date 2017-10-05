@@ -25,7 +25,8 @@ public class Main {
             int enteredNumber = scanner.nextInt();
             switch (enteredNumber) {
                 case 1:
-                    orderDrink(factory);
+                    order.chooseDrink(factory);
+                    order.printOrderSummary();
                     break;
                 case 2:
                     System.out.println("Entered number: " + enteredNumber);
@@ -67,7 +68,7 @@ public class Main {
 //    }
     }
 
-    private static List<Dish> queryDrinks(SessionFactory factory) {
+    static List<Dish> queryDrinks(SessionFactory factory) {
         Session session = factory.getCurrentSession();
         try {
             session.beginTransaction();
@@ -96,28 +97,6 @@ public class Main {
             return cuisinesList;
         } finally {
             session.close();
-        }
-    }
-
-    private static void orderDrink(SessionFactory factory) {
-        int totalPrice = 0;
-        Scanner scanner = new Scanner(System.in);
-        List<Dish> drinks = queryDrinks(factory);
-        System.out.println("List of drinks:");
-        for (int i = 0; i < drinks.size(); i++) {
-            System.out.println(i + ") " + drinks.get(i).getDishName() + ", price: " + drinks.get(i).getPrice() + "$");
-        }
-        System.out.println("Enter the number of drink to order.");
-
-        int enteredNumber = scanner.nextInt();
-        System.out.println("Entered number: " + enteredNumber);
-
-        try {
-            Dish orderedDrink = drinks.get(enteredNumber);
-            totalPrice = totalPrice + orderedDrink.getPrice();
-            System.out.println("Your order: " + orderedDrink.getDishName() + ", price: " + totalPrice + "$");
-        } catch (IndexOutOfBoundsException e) {
-            System.out.println("Incorrect number.");
         }
     }
 
