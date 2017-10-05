@@ -23,7 +23,13 @@ public class Main {
         while (true) {
             System.out.println("Enter 1 to order a drink, 2 to order a lunch.");
             Order order = new Order();
-            int enteredNumber = scanner.nextInt();
+            int enteredNumber;
+            if (scanner.hasNextInt()) {
+                enteredNumber = scanner.nextInt();
+            } else {
+                enteredNumber = -1;
+                scanner.next();
+            }
             switch (enteredNumber) {
                 case 1:
                     order.chooseDrink(factory);
@@ -49,10 +55,9 @@ public class Main {
                     List<Dish> desserts = DbAccess.dessertWhereCuisine(factory, chosenCuisine);
                     order.chooseDessert(desserts);
                     order.printOrderSummary();
-
                     break;
                 default:
-                    System.out.println("Incorrect input, Enter 1 to order a drink, 2 to order a lunch.");
+                    System.out.println("Incorrect input.");
                     break;
             }
         }
