@@ -23,7 +23,8 @@ public class Dish {
     @Column(name = "price")
     private int price;
 
-    public Dish() {}
+    public Dish() {
+    }
 
     public Dish(String dishName, String cuisine, String typeOfMeal, int price) {
         this.dishName = dishName;
@@ -74,6 +75,7 @@ public class Dish {
 
     @Override
     public String toString() {
-        return "Dish{" + "id=" + id + ", dishName='" + dishName + '\'' + ", cuisine='" + cuisine + '\'' + ", typeOfMeal='" + typeOfMeal + '\'' + ", price=" + price + '}';
+        return "Dish{" + "id=" + id + ", dishName='" + dishName + '\'' + ", cuisine='"
+                + cuisine + '\'' + ", typeOfMeal='" + typeOfMeal + '\'' + ", price=" + price + '}';
     }
 }

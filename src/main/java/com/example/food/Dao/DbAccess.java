@@ -13,17 +13,17 @@ import java.util.Scanner;
 public class DbAccess {
 
     public static List<Dish> queryDrinks(SessionFactory factory) {
-    Session session = factory.getCurrentSession();
-    try {
-        session.beginTransaction();
-        String hql = "FROM Dish D where D.typeOfMeal = 'drink'";
-        Query query = session.createQuery(hql);
-        List<Dish> drinks = query.list();
-        return drinks;
-    } finally {
-        session.close();
+        Session session = factory.getCurrentSession();
+        try {
+            session.beginTransaction();
+            String hql = "FROM Dish D where D.typeOfMeal = 'drink'";
+            Query query = session.createQuery(hql);
+            List<Dish> drinks = query.list();
+            return drinks;
+        } finally {
+            session.close();
+        }
     }
-}
 
     public static List<String> availableCuisines(SessionFactory factory) {
         Session session = factory.getCurrentSession();

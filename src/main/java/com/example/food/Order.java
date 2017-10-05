@@ -67,7 +67,8 @@ public class Order {
         while (this.getMainCourse() == null) {
             System.out.println("Available main courses - please enter a number:");
             for (int i = 0; i < mainCourses.size(); i++) {
-                System.out.println(i + ") " + mainCourses.get(i).getDishName() + ", price: " + mainCourses.get(i).getPrice() + "$");
+                System.out.println(i + ") " + mainCourses.get(i).getDishName()
+                        + ", price: " + mainCourses.get(i).getPrice() + "$");
             }
             Scanner scanner = new Scanner(System.in);
             int chosenNumber;
@@ -86,16 +87,17 @@ public class Order {
     }
 
     void chooseDessert(List<Dish> desserts) {
-        while(this.getDessert() == null) {
+        while (this.getDessert() == null) {
             System.out.println("Available desserts - please enter a number:");
             for (int i = 0; i < desserts.size(); i++) {
-                System.out.println(i + ") " + desserts.get(i).getDishName() + ", price " + desserts.get(i).getPrice() + "$");
+                System.out.println(i + ") " + desserts.get(i).getDishName() +
+                        ", price " + desserts.get(i).getPrice() + "$");
             }
             Scanner scanner = new Scanner(System.in);
             int chosenNumber;
-            if (scanner.hasNextInt()){
+            if (scanner.hasNextInt()) {
                 chosenNumber = scanner.nextInt();
-            }else {
+            } else {
                 chosenNumber = -1;
             }
             try {
@@ -113,13 +115,14 @@ public class Order {
             List<Dish> drinks = DbAccess.queryDrinks(factory);
             System.out.println("List of drinks:");
             for (int i = 0; i < drinks.size(); i++) {
-                System.out.println(i + ") " + drinks.get(i).getDishName() + ", price: " + drinks.get(i).getPrice() + "$");
+                System.out.println(i + ") " + drinks.get(i).getDishName()
+                        + ", price: " + drinks.get(i).getPrice() + "$");
             }
             System.out.println("Enter the number of drink to order.");
             int enteredNumber;
-            if (scanner.hasNextInt()){
+            if (scanner.hasNextInt()) {
                 enteredNumber = scanner.nextInt();
-            }else {
+            } else {
                 enteredNumber = -1;
             }
             try {
@@ -136,14 +139,15 @@ public class Order {
         int chosenNumber;
         while (true) {
             System.out.println("Should we add ice cubes or lemon to ordered drink?");
-            System.out.println("Enter:\n0) no ice cubes, no lemon\n1) add only ice cubes\n2) add only lemon\n3) add ice cubes and lemon");
+            System.out.println("Enter:\n0) no ice cubes, no lemon\n1) add only ice cubes" +
+                    "\n2) add only lemon\n3) add ice cubes and lemon");
             Scanner scanner = new Scanner(System.in);
-            if(scanner.hasNextInt()) {
+            if (scanner.hasNextInt()) {
                 chosenNumber = scanner.nextInt();
-            }else {
+            } else {
                 chosenNumber = -1;
             }
-            if (chosenNumber >= 0 && chosenNumber <4){
+            if (chosenNumber >= 0 && chosenNumber < 4) {
                 break;
             }
             System.out.println("Incorrect input.");
@@ -171,7 +175,8 @@ public class Order {
         System.out.println("Your order summary:");
         int totalPrice = 0;
         if (this.drink != null) {
-            System.out.println("Drink: " + this.getDrink().getDishName() + ", price: " + this.getDrink().getPrice() + "$");
+            System.out.println("Drink: " + this.getDrink().getDishName()
+                    + ", price: " + this.getDrink().getPrice() + "$");
             if (this.isIceCubes()) {
                 System.out.println("+Extra Ice cubes");
             }
@@ -181,11 +186,13 @@ public class Order {
             totalPrice = totalPrice + this.getDrink().getPrice();
         }
         if (this.mainCourse != null) {
-            System.out.println("Main course: " + this.getMainCourse().getDishName() + ", price: " + this.getMainCourse().getPrice() + "$");
+            System.out.println("Main course: " + this.getMainCourse().getDishName()
+                    + ", price: " + this.getMainCourse().getPrice() + "$");
             totalPrice = totalPrice + this.getMainCourse().getPrice();
         }
         if (this.dessert != null) {
-            System.out.println("Dessert: " + this.getDessert().getDishName() + ", price: " + this.getDessert().getPrice() + "$");
+            System.out.println("Dessert: " + this.getDessert().getDishName()
+                    + ", price: " + this.getDessert().getPrice() + "$");
             totalPrice = totalPrice + this.getDessert().getPrice();
         }
         System.out.println("Total price: " + totalPrice + "$");
