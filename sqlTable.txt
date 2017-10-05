@@ -1,8 +1,0 @@
-CREATE TABLE `dishes` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
-  `dishname` varchar(200) DEFAULT NULL,
-  `cuisine` varchar(50) DEFAULT NULL,
-  `typeofmeal` varchar(50) DEFAULT NULL,
-  `price` int(10) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
