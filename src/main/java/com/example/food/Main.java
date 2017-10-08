@@ -9,6 +9,11 @@ import org.hibernate.cfg.Configuration;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Before running the application:
+ * - make sure that hibernate configuration is valid (hibernate.cfg.xml),
+ * - table schema and example data are contained in food_table_schema.sql and data.sql
+ */
 public class Main {
 
 
